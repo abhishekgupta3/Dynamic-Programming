@@ -15,7 +15,7 @@ int lcs(int x, int y, string a, string b) {
 int lcsMemo(int x, int y, string a, string b, int dp[][105]) {
 	if (x == 0 || y == 0) dp[x][y] = 0;
 	if (dp[x][y] != -1) return dp[x][y];
-	if (a[x - 1] == b[y - 1]) dp[x][y] =  1 + lcs(x - 1, y - 1, a, b);
+	if (a[x - 1] == b[y - 1]) dp[x][y] =  1 + lcsMemo(x - 1, y - 1, a, b, dp);
 	else
 		dp[x][y] = max(lcsMemo(x - 1, y, a, b, dp), lcsMemo(x, y - 1, a, b, dp));
 	return dp[x][y];
