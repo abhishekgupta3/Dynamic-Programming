@@ -1,16 +1,15 @@
-// Maximize The Cut Segments:
-// N = 4
-// x = 2, y = 1, z = 1   O/P: 4
-
+// rod cutting
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 
-// rod cut recursive T.C: O(3^n)
-int maximizeTheCuts(int n, int x, int y, int z) {
+//  recursive T.C: O(2^n)
+int Rec(int len[] , int n, int price[], int totalLen) {
 	if (n == 0 ) return 0;
-	if (n < 0) return INT_MIN;
-	return 1 + max( maximizeTheCuts(n - x, x, y, z), max(maximizeTheCuts(n - y, x, y, z), maximizeTheCuts(n - z, x, y, z)));
+	if (len[n - 1] > totalLen) {
+		return Rec(len, n - 1, price, totalLen);
+	}
+	return max(price[n - 1] + Rec(len, n , price, totalLen - len[n - 1]), Rec(len,  n - 1, price, totalLen));
 }
 
 
@@ -21,15 +20,35 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n, x, y, z;
-	cin >> n >> x >> y >> z;
+	int n;
+	cin >> n;
 
-	cout << maximizeTheCuts(n, x, y, z) << endl;
+	int price[n], len[n];
 
-	int dp[n + 1];
-	memset(dp, -1, sizeof (dp));
+	for (int i = 0; i < n; i++) cin >> price[i];
+	for (int i = 0; i < n; i++) len[i] = i + 1;
+	int totalLen = n;
 
+	cout << Rec(len, n, price, totalLen) << endl;
 
+	//  dp solution( bottom up) T.C : O(n*w)  A.S : O(n*w)
+	int t[n + 1][n + 1];
+	memset(t, -1, sizeof t);
+	for (int i = 0; i <= n; i++) t[i][0] = 0;
+	for (int i = 0; i <= totalLen; i++) t[0][i] = 0;
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			if (len[i - 1] > j) {
+				t[i][j] = t[i - 1][j];
+			}
+			else {
+				t[i][j] = max(price[i - 1] + t[i][j - len[i - 1]], t[i - 1][j]);
+			}
+		}
+	}
+
+	cout << t[n][n] << endl;
 
 
 	return 0;
