@@ -10,8 +10,8 @@ int main() {
 #endif
 	string a, b, c; cin >> a >> b >> c;
 
-	int dp[a.length()][b.length()][c.length()];
-	// memset(dp, -1, sizeof dp);
+	int dp[105][105][105];
+	memset(dp, -1, sizeof dp);
 
 	for (int j = 0; j <= b.length(); j++) {
 		for (int k = 0; k <= c.length(); k++) {
