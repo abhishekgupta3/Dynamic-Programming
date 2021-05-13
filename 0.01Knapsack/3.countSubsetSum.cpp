@@ -7,8 +7,9 @@ int dp[1005][1005];
 
 // Count of subset sum recursive T.C: O(2^n)
 bool subsetRec(int arr[] , int n, int sum) {
-	if (n == 0 ) return 0;
 	if (sum == 0 )return 1;
+	if (n == 0 ) return 0;
+
 	if (arr[n - 1] > sum) {
 		return subsetRec(arr,  n - 1, sum);
 	}

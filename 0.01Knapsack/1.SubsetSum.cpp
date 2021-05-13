@@ -8,8 +8,9 @@ int dp[1005][1005];
 
 // subset sum recursive T.C: O(2^n)
 bool subsetRec(int arr[] , int n, int sum) {
-	if (n == 0 ) return 0;
 	if (sum == 0 )return 1;
+	if (n == 0 ) return 0;
+
 	if (arr[n - 1] > sum) {
 		return subsetRec(arr,  n - 1, sum);
 	}
@@ -18,8 +19,9 @@ bool subsetRec(int arr[] , int n, int sum) {
 
 // subset memoization T.C: O(n*sum) A.S: O(n*sum)
 int subsetMemo(int arr[] , int n, int sum, int dp[][1005]) {
-	if (n == 0 ) return 0;
 	if (sum == 0 ) return 1;
+	if (n == 0 ) return 0;
+
 	if (dp[n][sum] != -1) return dp[n][sum];
 
 	if (arr[n - 1] > sum) {
