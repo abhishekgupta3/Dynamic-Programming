@@ -12,7 +12,7 @@ bool isPaindrome(string s, int i, int j) {
 	return isPaindrome(s, i + 1, j - 1);
 }
 
-// Palindromic Partition Memoization
+// Palindromic Partition Memoization T.C: O(n^3)
 int PalindromePartition(string s, int i, int j) {
 
 	if (dp[i][j] != -1)return dp[i][j];
