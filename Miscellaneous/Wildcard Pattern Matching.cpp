@@ -1,25 +1,36 @@
 // Wildcard Pattern Matching
-////////////////////////////////////////////////////////////////
+// *************************************************************************************
 #include <bits/stdc++.h>
 using namespace std;
 
-bool wildcard(string s, string p, int i, int j, int n, int m) {
-	if (i == n and j == m)return 1;
-	if (j == m)return 0;
+vector<vector<int>>dp;
 
-	if (s[i] == p[j])return wildcard(s, p, i + 1, j + 1, n, m);
-	else if (p[j] == '?') return wildcard(s, p, i + 1, j + 1, n, m);
-	else if (p[j] == '*') {
-		// * replaced with empty sequence
-		bool a = wildcard(s, p, i, j + 1, n, m);
-		// * replaced with s[i]
-		bool b = wildcard(s, p, i + 1, j + 1, n, m);
-		// * replaced with s[i] followed by *
-		bool c = wildcard(s, p, i + 1, j, n, m);
-		return a || b || c;
+bool wildcard(string& s, string& p, int i, int j) {
+
+	//base case
+	if (i == s.length() and j == p.length())return 1;
+	// pattern end
+	if (j == p.length())return 0;
+	// string end
+	if (i == s.length()) {
+		for (int k = j; k < p.length(); k++) {
+			if (p[k] != '*')return false;
+		}
+		return true;
 	}
-	else return 0;
 
+	// Memoization
+	if (dp[i][j] != -1) return dp[i][j];
+
+	if (s[i] == p[j] || p[j] == '?') {
+		dp[i][j] = wildcard(s, p, i + 1, j + 1);
+	}
+	else if (p[j] == '*') {
+		dp[i][j] = wildcard(s, p, i + 1, j) || wildcard(s, p, i, j + 1);
+	}
+	else dp[i][j] = 0;
+
+	return dp[i][j];
 }
 
 
@@ -30,8 +41,10 @@ int main() {
 #endif
 
 	string str, pat; cin >> str >> pat;
-	int n = str.length(), m = pat.length();
-	cout << wildcard(str, pat, 0, 0, n, m);
+	// resize the dp array
+	dp.resize(s.size() + 1, vector<int>(p.size() + 1, -1));
+
+	cout << wildcard(str, pat, 0, 0);
 
 	return 0;
 }
