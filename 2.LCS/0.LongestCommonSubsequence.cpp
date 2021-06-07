@@ -1,7 +1,6 @@
 // Longest Common Subsequence
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll ;
 
 // lcs recursive O(2^n)
 int lcs(int x, int y, string a, string b) {
@@ -21,6 +20,22 @@ int lcsMemo(int x, int y, string a, string b, int dp[][105]) {
 	return dp[x][y];
 }
 
+// lcs bottom up space optimized A.S: O(m)
+int lcsOptimized(string a, string b, int n, int m) {
+	int dp[2][m + 1];
+	memset(dp, 0, sizeof dp);
+
+	bool idx; // changes according to i (even or odd)
+	for (int i = 1; i <= n; i++) {
+		idx = i & 1; // if i is odd idx is 1
+		for (int j = 1; j <= m; j++) {
+			if (a[i - 1] == b[j - 1])dp[idx][j] = dp[1 - idx][j - 1] + 1;
+			else dp[idx][j] = max(dp[1 - idx][j], dp[idx][j - 1]);
+		}
+	}
+	return dp[idx][m];
+}
+
 int main() {
 
 #ifndef ONLINE_JUDGE
@@ -38,7 +53,7 @@ int main() {
 
 	cout << lcsMemo(x, y, a, b, dp) << endl;
 
-	// lcs bottom up O(x*y)
+	// lcs bottom up T.C: O(x * y) A.S: O(m*n)
 	for (int i = 0; i <= x; i++) dp[i][0] = 0;
 	for (int i = 0; i <= y; i++) dp[0][i] = 0;
 
@@ -51,6 +66,9 @@ int main() {
 		}
 	}
 	cout << dp[x][y] << endl;
+
+	cout << lcsOptimized(a, b, x, y) << endl;
+
 
 	return 0;
 
