@@ -4,15 +4,16 @@ using namespace std;
 int MaximumSquare(vector<vector<int>>&mat, int n, int m) {
 	vector<vector<int>> dp(n, vector<int>(m, 0));
 
+	int ans = 0;
+
 	// if 1 => square matrix of size 1 is possible
 	for (int i = n - 1; i >= 0; i--) {
-		if (mat[i][m - 1] == 1)dp[i][m - 1] = 1;
+		if (mat[i][m - 1] == 1)dp[i][m - 1] = 1, ans = 1;
 	}
 	for (int j = m - 1; j >= 0; j--) {
-		if (mat[n - 1][j] == 1)dp[n - 1][j] = 1;
+		if (mat[n - 1][j] == 1)dp[n - 1][j] = 1, ans = 1;
 	}
 
-	int ans = 0;
 	for (int i = n - 2; i >= 0; i--) {
 		for (int j = m - 2; j >= 0; j--) {
 			// dp[i][j] will be min from adjacent 2 and diagonal + 1
@@ -40,8 +41,6 @@ int main() {
 	}
 
 	cout << MaximumSquare(mat, n, m);
-
-
 
 	return 0;
 }
