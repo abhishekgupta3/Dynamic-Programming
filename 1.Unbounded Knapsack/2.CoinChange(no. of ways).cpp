@@ -1,4 +1,4 @@
-// coin change
+// coin change (number of distinct ordered ways)
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -29,6 +29,22 @@ int coinChangeMemo(int ar[] , int n, int sum, int dp[][1005]) {
 	return dp[sum][n];
 }
 
+// coin change optimized T.C: O(n*sum) A.S: O(sum)
+int coinChangeOptimized(int ar[],int n,int sum){
+	vector<int> dp(sum+1,0);
+	dp[0]=1;
+		
+	for(int i=0;i<n;i++){
+       		 for(int j=0;j<=sum;j++){
+		     	if(j>=ar[i]){
+		         	dp[j]+=dp[j-ar[i]];
+		     	}
+		 }
+	}
+
+	return dp[sum];
+}
+
 int main() {
 
 #ifndef ONLINE_JUDGE
@@ -49,7 +65,7 @@ int main() {
 	memset(dp, -1, sizeof dp);
 	cout << coinChangeMemo(ar, n, sum, dp) << endl;
 
-// coin change dp solution( bottom up) T.C : O(n*sum)  A.S : O(n*sum)
+	// coin change dp solution( bottom up) T.C : O(n*sum)  A.S : O(n*sum)
 	for (int i = 0; i <= sum; i++) dp[i][0] = 0;
 	for (int i = 0; i <= n; i++) dp[0][i] = 1;
 
