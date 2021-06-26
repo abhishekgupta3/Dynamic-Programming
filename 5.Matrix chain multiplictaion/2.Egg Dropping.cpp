@@ -1,4 +1,4 @@
-//  minimize the number of trials in worst case
+//  EGG DROP: minimize the number of trials in worst case
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -34,8 +34,35 @@ int eggMemo(int n, int k) {
 	return dp[n][k] = ans;
 }
 
-int main() {
+// Optimized T.C : O(k*n*logN)
+int eggDrop(int n, int k, vector<vector<int>>&dp) {
 
+	if (k == 1)return n;
+	if (n == 1 || n == 0)return n;
+
+	if (dp[n][k] != -1)return dp[n][k];
+
+	int ans = INT_MAX, low = 0, high = n;
+
+	// binary search
+	while (low <= high) {
+		int mid = low + (high - low) / 2;
+
+		int bottom = eggDrop(mid - 1, k - 1, dp);
+		int top = eggDrop(n - mid, k, dp);
+
+		int temp = 1 + max(bottom, top);
+
+		//since, temp is needed to be maximized
+		if (bottom < top)low = mid + 1;
+		else high = mid - 1;
+
+		ans = min(ans, temp);
+	}
+	return dp[n][k] = ans;
+}
+
+int main() {
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
@@ -47,6 +74,10 @@ int main() {
 	// Top down
 	memset(dp, -1, sizeof dp);
 	cout << eggMemo(n, k) << '\n';
+
+	// optimized
+	vector<vector<int>>dp(n + 1, vector<int>(k + 1, -1));
+	cout << eggDrop(n, k, dp);
 
 	// bottom down T.C: O(eggs*floors*floors) = O(k*n^2)
 	int mat[205][205]; //eggs X floors (k*n)
@@ -79,5 +110,4 @@ int main() {
 
 
 	return 0;
-
 }

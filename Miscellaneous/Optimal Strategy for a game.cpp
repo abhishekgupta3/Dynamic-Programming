@@ -21,6 +21,31 @@ int maxAmount(int arr[], int i, int j) {
 	return dp[i][j] = max(temp1, temp2);
 }
 
+long long bottomUp(int arr[], int n) {
+	long long dp[n][n];
+
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j)dp[i][j] = 0;
+	}
+
+	for (int gap = 0; gap < n; gap ++) {
+		for (int i = 0, j = gap; j < n; i++, j++) {
+
+			if (gap == 0)dp[i][j] = arr[i];
+			else if (gap == 1) {
+				dp[i][j] = max(arr[i], arr[j]);
+			}
+			else {
+				int temp1 = arr[i] + min(dp[i + 2][j], dp[i + 1][j - 1]);
+				int temp2 = arr[j] + min(dp[i][j - 2], dp[i + 1][j - 1]);
+				dp[i][j] = max(temp1, temp2);
+			}
+		}
+	}
+
+	return dp[0][n - 1];
+}
+
 int main() {
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
@@ -32,6 +57,8 @@ int main() {
 	int i = 0, j = n - 1;
 	memset(dp, -1, sizeof dp);
 	cout << maxAmount(arr, i, j) << '\n';
+
+	cout << bottomUp(arr, n);
 
 	return 0;
 }
