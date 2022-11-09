@@ -23,7 +23,7 @@ int MinimumSubsetDifference(int A[], int n) {
 	int mn = INT_MAX;
 	// traversing the last row of dp
 	for (int i = 0; i <= sum / 2; i++) {
-		if (dp[n - 1][i] == 1) mn = min(mn, sum - 2 * i);
+		if (dp[n][i] == 1) mn = min(mn, sum - 2 * i);
 	}
 
 	return mn;
